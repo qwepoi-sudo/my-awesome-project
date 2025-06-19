@@ -66,6 +66,7 @@ https://drive.google.com/file/d/1xPBcJnajcDB16ss9Ale1FgShb4u4sTqZ/view?usp=shari
 Обратную связь или предложения по улучшению можно направлять через репозиторий или по электронной почте (при наличии).
 
 Пример кода:
+
 #include <iostream>
 using namespace std;
 

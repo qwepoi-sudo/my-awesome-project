@@ -1,0 +1,109 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    // Инициализация игрового поля
+    char field[3][3] = { {' ', ' ', ' '},
+                         {' ', ' ', ' '},
+                         {' ', ' ', ' '} };
+
+    int currentPlayer = 1; // 1 - крестики, 2 - нолики
+    char symbol;
+    int row, col;
+    bool gameEnded = false;
+    int movesCount = 0;
+
+    while (!gameEnded && movesCount < 9) {
+        // Отображение поля
+        cout << "\nТекущее поле:\n";
+        for (int i = 0; i < 3; i++) {
+            cout << " ";
+            for (int j = 0; j < 3; j++) {
+                cout << field[i][j];
+                if (j < 2) cout << " | ";
+            }
+            cout << "\n";
+            if (i < 2) cout << "---+---+---\n";
+        }
+
+        // Ввод координат с проверками
+        while (true) {
+            cout << "Игрок " << currentPlayer << " (" << (currentPlayer == 1 ? 'X' : 'O') << "), введите номер строки (1-3): ";
+            cin >> row;
+            if (cin.fail() || row < 1 || row > 3) {
+                cin.clear();
+                cin.ignore(10000, '\n');
+                cout << "Некорректный ввод. Пожалуйста, введите число от 1 до 3.\n";
+                continue;
+            }
+
+            cout << "Введите номер столбца (1-3): ";
+            cin >> col;
+            if (cin.fail() || col < 1 || col > 3) {
+                cin.clear();
+                cin.ignore(10000, '\n');
+                cout << "Некорректный ввод. Пожалуйста, введите число от 1 до 3.\n";
+                continue;
+            }
+
+            // Проверка занятости клетки
+            if (field[row - 1][col - 1] != ' ') {
+                cout << "Эта ячейка уже занята. Пожалуйста, выберите другую.\n";
+                continue;
+            }
+
+            // Если всё в порядке, делаем ход
+            symbol = (currentPlayer == 1) ? 'X' : 'O';
+            field[row - 1][col - 1] = symbol;
+            movesCount++;
+            break;
+        }
+
+        // Проверка выигрыша
+        // Проверка строк
+        for (int i = 0; i < 3; i++) {
+            if (field[i][0] == symbol && field[i][1] == symbol && field[i][2] == symbol) {
+                gameEnded = true;
+                break;
+            }
+        }
+        // Проверка столбцов
+        for (int j = 0; j < 3; j++) {
+            if (field[0][j] == symbol && field[1][j] == symbol && field[2][j] == symbol) {
+                gameEnded = true;
+                break;
+            }
+        }
+        // Проверка диагоналей
+        if (!gameEnded) {
+            if (field[0][0] == symbol && field[1][1] == symbol && field[2][2] == symbol) {
+                gameEnded = true;
+            } else if (field[0][2] == symbol && field[1][1] == symbol && field[2][0] == symbol) {
+                gameEnded = true;
+            }
+        }
+
+        if (gameEnded) {
+            cout << "\nПоздравляем! Игрок " << currentPlayer << " (" << symbol << ") победил!\n";
+        } else if (movesCount == 9) {
+            cout << "\nНичья! Игра окончена.\n";
+        } else {
+            // Передача хода
+            currentPlayer = (currentPlayer == 1) ? 2 : 1;
+        }
+    }
+
+    // Итоговое отображение поля
+    cout << "\nИтоговое поле:\n";
+    for (int i = 0; i < 3; i++) {
+        cout << " ";
+        for (int j = 0; j < 3; j++) {
+            cout << field[i][j];
+            if (j < 2) cout << " | ";
+        }
+        cout << "\n";
+        if (i < 2) cout << "---+---+---\n";
+    }
+
+    return 0;
+}
